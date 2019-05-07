@@ -32,13 +32,7 @@ foreach ( $dom->find("table.table",0)->children(1)->find('tr') as $tr ) {
         'on_notice_to'      => date('Y-m-d', strtotime($tr->find("td",2)->plaintext))
     ];
 
-    # Check if record exist, if not, INSERT, else do nothing
-    $existingRecords = scraperwiki::select("* from data where `council_reference`='" . $record['council_reference'] . "'");
-    if ( count($existingRecords) == 0 ) {
-        print ("Saving record " . $record['council_reference'] . " - " . $record['address'] ."\n");
+    print ("Saving record " . $record['council_reference'] . " - " . $record['address'] ."\n");
 //         print_r ($record);
-        scraperwiki::save(array('council_reference'), $record);
-    } else {
-        print ("Skipping already saved record - " . $record['council_reference'] . "\n");
-    }
+    scraperwiki::save(array('council_reference'), $record);
 }
