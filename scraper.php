@@ -3,7 +3,7 @@ require_once 'vendor/autoload.php';
 require_once 'vendor/openaustralia/scraperwiki/scraperwiki.php';
 
 use PGuardiario\PGBrowser;
-use Sunra\PhpSimple\HtmlDomParser;
+use Torann\DomParser\HtmlDom;
 
 date_default_timezone_set('Australia/Hobart');
 
@@ -13,7 +13,7 @@ $comment_url = 'mailto:kc@kingborough.tas.gov.au';
 $browser = new PGBrowser();
 $page    = $browser->get($url_base);
 
-$dom = HtmlDomParser::str_get_html($page->html);
+$dom = HtmlDom::fromString($page->html);
 
 foreach ( $dom->find("table.table",0)->children(1)->find('tr') as $tr ) {
     $council_reference = strrev(explode("/", strrev($tr->find("a",0)->href))[0]);                             # get the file name
