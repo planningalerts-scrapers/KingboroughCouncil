@@ -11,8 +11,8 @@ type FieldNames =
   | 'info_url'
   | 'date_scraped'
   | 'on_notice_from'
-  | 'on_notice_to'
-  | 'more_info';
+  | 'on_notice_to';
+// | 'more_info';
 
 type Document = Record<FieldNames, string>;
 
@@ -27,7 +27,7 @@ const fieldNames: readonly FieldNames[] = [
   'date_scraped',
   'on_notice_from',
   'on_notice_to',
-  'more_info',
+  // 'more_info',
 ];
 
 const options = {
@@ -118,6 +118,14 @@ sqlite3.verbose();
     console.log(`createQuery:`, createQuery);
     db.run(createQuery);
 
+    // TODO: Figure out how to add a column if it doesn't exist
+    // db.get('SELECT more_info from data', (error) => {
+    //   console.log('error', error);
+    //   if (error) {
+    //     db.run('ALTER TABLE data ADD COLUMN more_info TEXT');
+    //   }
+    // });
+
     console.log(`insertQuery:`, insertQuery);
 
     /** Insert new records */
@@ -130,8 +138,8 @@ sqlite3.verbose();
         record[fieldNames[3]],
         record[fieldNames[4]],
         record[fieldNames[5]],
-        record[fieldNames[6]],
-        record[fieldNames[7]]
+        record[fieldNames[6]]
+        // record[fieldNames[7]]
       );
     });
     statement.finalize();
