@@ -78,7 +78,7 @@ sqlite3.verbose();
 
       return {
         council_reference,
-        address,
+        address: `${address}, Tasmania`,
         description,
         info_url,
         date_scraped: new Date().toISOString(),

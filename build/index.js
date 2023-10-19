@@ -77,7 +77,7 @@ sqlite3_1.default.verbose();
         const [council_reference, address, on_notice_from, on_notice_to, description,] = strings;
         return {
             council_reference,
-            address,
+            address: `${address}, Tasmania`,
             description,
             info_url,
             date_scraped: new Date().toISOString(),
