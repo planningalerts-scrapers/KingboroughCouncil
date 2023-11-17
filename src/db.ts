@@ -1,4 +1,3 @@
-// Initialise our database
 import sqlite3 from "sqlite3";
 
 export type FieldNames =
@@ -29,8 +28,19 @@ export const fieldNames: readonly FieldNames[] = [
 
 export type Document = Record<FieldNames, string>;
 
-const db = new sqlite3.Database("data.sqlite");
-db.serialize(function () {
+const dbPromise = new Promise<sqlite3.Database>((resolve, reject) => {
+  const db = new sqlite3.Database("data.sqlite", (err) => {
+    if (err === null) resolve(db);
+    else reject(err);
+  });
+});
+
+export async function getDb(): Promise<sqlite3.Database> {
+  return dbPromise;
+}
+
+getDb().then((db) => {
+  db.serialize();
   const createFields = fieldNames
     .map((f, i) => {
       if (i === 0) return `${f} TEXT PRIMARY KEY`;
@@ -41,11 +51,8 @@ db.serialize(function () {
   //Create new table
   console.log(`createQuery:`, createQuery);
   db.run(createQuery);
-});
 
-// add the documents column if it doesn't exist
-db.serialize(function () {
-  // Check if the column already exists
+  // add the documents column if it doesn't exist
   const checkQuery = `PRAGMA table_info(data)`;
   db.all(checkQuery, function (err, rows: { name: string }[]) {
     if (err) {
@@ -68,37 +75,34 @@ db.serialize(function () {
   });
 });
 
-export function insertData(data: Document[]) {
-  db.serialize(function () {
-    const insertFields = fieldNames.join(", ");
-    /** Morph.io appears to persist the database across scraper runs.
-     * This should be enough to insert new DAs, update DAs when they change,
-     * and keep their data when they are removed from the website.
-     */
-    const insertQuery = `INSERT OR REPLACE INTO data (${insertFields}) VALUES (${fieldNames
-      .map(() => "?")
-      .join(", ")})`;
+export async function insertData(data: Document[]) {
+  const db = await getDb();
+  const insertFields = fieldNames.join(", ");
+  /** Morph.io appears to persist the database across scraper runs.
+   * This should be enough to insert new DAs, update DAs when they change,
+   * and keep their data when they are removed from the website.
+   */
+  const insertQuery = `INSERT OR REPLACE INTO data (${insertFields}) VALUES (${fieldNames
+    .map(() => "?")
+    .join(", ")})`;
 
-    console.log(`insertQuery:`, insertQuery);
+  console.log(`insertQuery:`, insertQuery);
 
-    /** Insert new records */
-    var statement = db.prepare(insertQuery);
-    data.forEach((record) => {
-      statement.run(
-        record[fieldNames[0]],
-        record[fieldNames[1]],
-        record[fieldNames[2]],
-        record[fieldNames[3]],
-        record[fieldNames[4]],
-        record[fieldNames[5]],
-        record[fieldNames[6]],
-        record[fieldNames[7]],
-        record[fieldNames[8]]
-      );
-    });
-    statement.finalize();
-    console.log("Inserted/updated", data.length, "records");
+  /** Insert new records */
+  var statement = db.prepare(insertQuery);
+  data.forEach((record) => {
+    statement.run(
+      record[fieldNames[0]],
+      record[fieldNames[1]],
+      record[fieldNames[2]],
+      record[fieldNames[3]],
+      record[fieldNames[4]],
+      record[fieldNames[5]],
+      record[fieldNames[6]],
+      record[fieldNames[7]],
+      record[fieldNames[8]]
+    );
   });
+  statement.finalize();
+  console.log("Inserted/updated", data.length, "records");
 }
-
-export default db;
