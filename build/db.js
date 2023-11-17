@@ -39,7 +39,6 @@ db.serialize(function () {
     // Check if the column already exists
     const checkQuery = `PRAGMA table_info(data)`;
     db.all(checkQuery, function (err, rows) {
-        console.log("🚀 ~ file: index.ts:62 ~ row:", rows);
         if (err) {
             console.error(err.message);
             return;

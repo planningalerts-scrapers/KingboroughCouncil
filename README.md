@@ -23,6 +23,6 @@ This will run the scraper whenever you save a change to a file.
 Edit the `.ts` files in the `src` directory to make changes. These are TypeScript files that are "compiled" to JavaScript files in the `build` directory.
 
 ## Commiting
-Ensure you have run `npm run dev` or `npm run build` before commiting and include the contents of `./build`.
+Ensure you have run `npm run dev` or `npm run tsc` before commiting and include the contents of `./build`.
 
 morph.io runs the built javascript, not typescript files.
