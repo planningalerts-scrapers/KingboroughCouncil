@@ -23,13 +23,16 @@
   },
   "homepage": "https://github.com/markdon/kcda-scrape#readme",
   "devDependencies": {
-    "@types/luxon": "^3.3.2",
-    "@types/request-promise": "^4.1.49",
+    "@tsconfig/node16": "^16.1.1",
+    "@types/cheerio": "^0.22.34",
+    "@types/luxon": "^3.3.4",
+    "@types/node": "^20.9.1",
+    "@types/request-promise": "^4.1.51",
+    "@types/sqlite3": "^3.1.11",
     "nodemon": "^3.0.1",
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "@tsconfig/node16": "^16.1.1",
     "cheerio": "^1.0.0-rc.12",
     "luxon": "^3.4.3",
     "request-promise": "^4.2.6",
