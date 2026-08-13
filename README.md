@@ -11,6 +11,7 @@
 - Node 16 - BEWARE the old version, this is what's supported on morph.io. See `nvm` if you need to be able to switch between versions. 
     - OPTIONAL: The `./devcontainer` directory contains config for running a Node 16 Dev Container. See https://code.visualstudio.com/docs/devcontainers/containers
 - Visual Studio Code - Highly recommended as your editor for build in type checking. 
+- `sqlite3` is pinned to `^5.1.6` in `package.json` - sqlite3 6.x does NOT run on Heroku-18 (which is what morph.io uses), so don't accept a Dependabot bump past the 5.x line without testing it on morph.io first. package.json (JSON) can't hold a comment next to the pin the way a Gemfile can, hence this note.
 
 ## Getting Started
 In a terminal, run the following commands:
